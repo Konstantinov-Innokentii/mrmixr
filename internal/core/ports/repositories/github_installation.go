@@ -2,14 +2,14 @@ package repositories
 
 import (
 	"context"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/entities"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 )
 
 type GithubInstallationRepository interface {
-	InsertInstallation(ctx context.Context, installation *entities.GithubInstallation) (err error)
-	GetInstallationByInstallationId(ctx context.Context, installationID int) (*entities.GithubInstallation, error)
+	InsertInstallation(ctx context.Context, installation *domain.GithubInstallation) (err error)
+	GetInstallationByInstallationID(ctx context.Context, installationID int) (*domain.GithubInstallation, error)
 }
 
 type GithubInstallationAPI interface {
-	GetInstallationType(ctx context.Context, installationID int) (*entities.InstallationType, error)
+	GetInstallationType(ctx context.Context, installationID int) (*domain.InstallationType, error)
 }

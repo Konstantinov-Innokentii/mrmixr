@@ -2,7 +2,8 @@ package services
 
 import (
 	"context"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/entities"
+	"fmt"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 )
 
 type GithubSetupService struct {
@@ -19,16 +20,19 @@ func NewGithubSetupService(ii *GithubInstallationService, ri *GithubRepositorySe
 }
 
 func (service *GithubSetupService) Setup(ctx context.Context, installationID int) error {
+	//return errors.New("some validation error")
 	installationType, err := service.installationService.GetInstallationType(ctx, installationID)
 	if err != nil {
-		return err
+		// wrap error:
+		//fmw.Errof(installiion-service-error-%w)
+		return fmt.Errorf("installationService.GetInstallationType: %w", err)
 	}
-	newInstallation, err := entities.CreateInstallation(installationID, *installationType)
+	newInstallation, err := domain.CreateInstallation(installationID, *installationType)
 	if err != nil {
 		return err
 	}
 	err = service.installationService.Store(ctx, newInstallation)
-	installation, err := service.installationService.GetByInstallationId(ctx, installationID)
+	installation, err := service.installationService.GetByInstallationID(ctx, installationID)
 	if err != nil {
 		return err
 	}

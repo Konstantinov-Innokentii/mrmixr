@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	entities "github.com/Konstantinov-Innokentii/mrmixr/internal/core/entities"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/repositories"
 )
 
@@ -19,16 +19,24 @@ func NewGithubRepositoryService(grepo repositories.GithubRepositoryRepository, g
 	return service
 }
 
-func (service *GithubRepositoryService) StoreBatch(ctx context.Context, repos *[]entities.GithubRepository) error {
+func (service *GithubRepositoryService) StoreBatch(ctx context.Context, repos []*domain.GithubRepository) error {
 	err := service.GithubRepositoryRepository.InsertRepositoryBatch(ctx, repos)
 	return err
 }
 
-func (service *GithubRepositoryService) Fetch(ctx context.Context, installation *entities.GithubInstallation) error {
+func (service *GithubRepositoryService) Fetch(ctx context.Context, installation *domain.GithubInstallation) error {
 	repos, err := service.GithubRepositoryApi.List(ctx, installation)
 	if err != nil {
 		return err
 	}
 	err = service.StoreBatch(ctx, repos)
 	return err
+}
+
+func (service *GithubRepositoryService) ListByInstallationID(ctx context.Context, installationID int) ([]*domain.GithubRepository, error) {
+	repos, err := service.GithubRepositoryRepository.ListByInstallationID(ctx, installationID)
+	if err != nil {
+		return nil, err
+	}
+	return repos, nil
 }

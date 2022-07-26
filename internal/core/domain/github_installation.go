@@ -1,4 +1,4 @@
-package entities
+package domain
 
 import "time"
 
@@ -10,15 +10,15 @@ const (
 )
 
 type GithubInstallation struct {
-	Id               int
-	InstallationId   int              `db:"installation_id"`
+	ID               int
+	InstallationID   int              `db:"installation_id"`
 	InstalledAt      time.Time        `db:"installed_at"`
 	InstallationType InstallationType `db:"installation_type"`
 }
 
-func CreateInstallation(installationId int, installationType InstallationType) (*GithubInstallation, error) {
+func CreateInstallation(installationID int, installationType InstallationType) (*GithubInstallation, error) {
 	return &GithubInstallation{
-		InstallationId:   installationId,
+		InstallationID:   installationID,
 		InstalledAt:      time.Now().UTC(),
 		InstallationType: installationType,
 	}, nil

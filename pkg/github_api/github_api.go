@@ -7,13 +7,13 @@ import (
 )
 
 type GithubApiConfig struct {
-	appId      int64
+	appID      int64
 	privateKey []byte
 }
 
-func NewGithubApiConfig(appId int64, privateKey []byte) *GithubApiConfig {
+func NewGithubApiConfig(appID int64, privateKey []byte) *GithubApiConfig {
 	return &GithubApiConfig{
-		appId:      appId,
+		appID:      appID,
 		privateKey: privateKey,
 	}
 }
@@ -33,7 +33,7 @@ func NewGithubAPI(config *GithubApiConfig, transport http.RoundTripper) *GithubA
 // NewInstallationClient create new Github API with installation token auth client for the installation.
 // It is used with endpoints which requires installation token auth.
 func (api *GithubAPI) NewInstallationClient(installation_id int) (*github.Client, error) {
-	itr, err := ghinstallation.New(api.transport, api.config.appId, int64(installation_id), api.config.privateKey)
+	itr, err := ghinstallation.New(api.transport, api.config.appID, int64(installation_id), api.config.privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (api *GithubAPI) NewInstallationClient(installation_id int) (*github.Client
 // NewJWTClient  create new GithubAPI client  with JWT auth for the installation.
 // It is used with endpoints which require JWT auth.
 func (api *GithubAPI) NewJWTClient() (*github.Client, error) {
-	jwtTransport, err := ghinstallation.NewAppsTransport(api.transport, api.config.appId, api.config.privateKey)
+	jwtTransport, err := ghinstallation.NewAppsTransport(api.transport, api.config.appID, api.config.privateKey)
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/entities"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/repositories"
 )
 
@@ -19,8 +19,8 @@ func NewGithubInstallationService(irepo repositories.GithubInstallationRepositor
 	return service
 }
 
-func (service *GithubInstallationService) GetByInstallationId(ctx context.Context, installationID int) (*entities.GithubInstallation, error) {
-	i, err := service.GithubInstallationRepository.GetInstallationByInstallationId(ctx, installationID)
+func (service *GithubInstallationService) GetByInstallationID(ctx context.Context, installationID int) (*domain.GithubInstallation, error) {
+	i, err := service.GithubInstallationRepository.GetInstallationByInstallationID(ctx, installationID)
 	if err != nil {
 		return nil, err
 	}
@@ -28,12 +28,12 @@ func (service *GithubInstallationService) GetByInstallationId(ctx context.Contex
 
 }
 
-func (service *GithubInstallationService) Store(ctx context.Context, installation *entities.GithubInstallation) error {
+func (service *GithubInstallationService) Store(ctx context.Context, installation *domain.GithubInstallation) error {
 	err := service.GithubInstallationRepository.InsertInstallation(ctx, installation)
 	return err
 }
 
-func (service *GithubInstallationService) GetInstallationType(ctx context.Context, installationID int) (*entities.InstallationType, error) {
+func (service *GithubInstallationService) GetInstallationType(ctx context.Context, installationID int) (*domain.InstallationType, error) {
 	installationType, err := service.GithubInstallationAPI.GetInstallationType(ctx, installationID)
 	if err != nil {
 		return nil, err

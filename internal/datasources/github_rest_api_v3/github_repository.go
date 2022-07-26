@@ -2,7 +2,7 @@ package github_rest_api_v3
 
 import (
 	"context"
-	entities "github.com/Konstantinov-Innokentii/mrmixr/internal/core/entities"
+	entities "github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 	"github.com/Konstantinov-Innokentii/mrmixr/pkg/github_api"
 )
 
@@ -10,8 +10,8 @@ type GithubRepositoryAPI struct {
 	GithubApi *github_api.GithubAPI
 }
 
-func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entities.GithubInstallation) (*[]entities.GithubRepository, error) {
-	client, err := repoAPI.GithubApi.NewInstallationClient(installation.InstallationId)
+func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entities.GithubInstallation) ([]*entities.GithubRepository, error) {
+	client, err := repoAPI.GithubApi.NewInstallationClient(installation.InstallationID)
 	if err != nil {
 		return nil, err
 	}
@@ -19,13 +19,13 @@ func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entit
 	if err != nil {
 		return nil, err
 	}
-	res := make([]entities.GithubRepository, 0, len(listRepos.Repositories))
+	res := make([]*entities.GithubRepository, 0, len(listRepos.Repositories))
 	for _, r := range listRepos.Repositories {
-		res = append(res, entities.GithubRepository{
+		res = append(res, &entities.GithubRepository{
 			Name:                 *r.Name,
-			GithubId:             *r.ID,
-			GithubInstallationId: installation.Id,
+			GithubID:             *r.ID,
+			GithubInstallationID: installation.ID,
 		})
 	}
-	return &res, nil
+	return res, nil
 }
