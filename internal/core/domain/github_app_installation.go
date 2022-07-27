@@ -9,15 +9,15 @@ const (
 	OrganizationInstallation
 )
 
-type GithubInstallation struct {
+type GithubAppInstallation struct {
 	ID               int
 	InstallationID   int              `db:"installation_id"`
 	InstalledAt      time.Time        `db:"installed_at"`
 	InstallationType InstallationType `db:"installation_type"`
 }
 
-func CreateInstallation(installationID int, installationType InstallationType) (*GithubInstallation, error) {
-	return &GithubInstallation{
+func CreateInstallation(installationID int, installationType InstallationType) (*GithubAppInstallation, error) {
+	return &GithubAppInstallation{
 		InstallationID:   installationID,
 		InstalledAt:      time.Now().UTC(),
 		InstallationType: installationType,

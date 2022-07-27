@@ -23,7 +23,7 @@ func (r *GithubRepositoryRepo) InsertRepositoryBatch(ctx context.Context, repos 
 	return err
 }
 
-func (r *GithubRepositoryRepo) ListByInstallationID(ctx context.Context, installationID int) ([]*domain.GithubRepository, error) {
+func (r *GithubRepositoryRepo) ListByGithubAppInstallationID(ctx context.Context, installationID int) ([]*domain.GithubRepository, error) {
 	// TODO: Rewrite with squirrel
 	//sql, args, err := r.PG.Builder.Select("*").From("github_repositories").Where("installation_id IN (?)", installationID).ToSql()
 	//if err != nil {

@@ -1,26 +1,26 @@
-package transport
+package handlers
 
 import (
 	"github.com/Konstantinov-Innokentii/mrmixr/api/models"
 	"github.com/Konstantinov-Innokentii/mrmixr/api/restapi/operations"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/services"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 type GithubRepositoriesHandler struct {
-	githubRepositoriesService *services.GithubRepositoryService
+	githubRepositoriesSvc ports.GithubRepositorySvc
 }
 
-func NewGithubRepositoriesHandler(githubRepoSvc *services.GithubRepositoryService) *GithubRepositoriesHandler {
+func NewGithubRepositoriesHandler(githubRepoSvc ports.GithubRepositorySvc) *GithubRepositoriesHandler {
 	return &GithubRepositoriesHandler{
-		githubRepositoriesService: githubRepoSvc,
+		githubRepositoriesSvc: githubRepoSvc,
 	}
 }
 
 func (handler *GithubRepositoriesHandler) ListGithubRepositories(params operations.ListGithubRepositoriesParams) middleware.Responder {
 	ctx := params.HTTPRequest.Context()
-	repos, err := handler.githubRepositoriesService.ListByInstallationID(ctx, 2)
+	repos, err := handler.githubRepositoriesSvc.ListByGithubAppInstallationID(ctx, 2)
 	if err != nil {
 		return operations.NewListGithubRepositoriesDefault(400)
 	}

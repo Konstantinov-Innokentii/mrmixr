@@ -1,13 +1,14 @@
-package repositories
+package ports
 
 import (
 	"context"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
 )
 
-type GithubInstallationRepository interface {
-	InsertInstallation(ctx context.Context, installation *domain.GithubInstallation) (err error)
-	GetInstallationByInstallationID(ctx context.Context, installationID int) (*domain.GithubInstallation, error)
+type GithubInstallationRepo interface {
+	InsertInstallation(ctx context.Context, installation *domain.GithubAppInstallation) (err error)
+	GetByInstallationID(ctx context.Context, installationID int) (*domain.GithubAppInstallation, error)
+	GetInstallationByInstallationID(ctx context.Context, id int) (interface{}, interface{})
 }
 
 type GithubInstallationAPI interface {

@@ -10,7 +10,7 @@ type GithubRepositoryAPI struct {
 	GithubApi *github_api.GithubAPI
 }
 
-func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entities.GithubInstallation) ([]*entities.GithubRepository, error) {
+func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entities.GithubAppInstallation) ([]*entities.GithubRepository, error) {
 	client, err := repoAPI.GithubApi.NewInstallationClient(installation.InstallationID)
 	if err != nil {
 		return nil, err
@@ -22,9 +22,9 @@ func (repoAPI GithubRepositoryAPI) List(ctx context.Context, installation *entit
 	res := make([]*entities.GithubRepository, 0, len(listRepos.Repositories))
 	for _, r := range listRepos.Repositories {
 		res = append(res, &entities.GithubRepository{
-			Name:                 *r.Name,
-			GithubID:             *r.ID,
-			GithubInstallationID: installation.ID,
+			Name:                    *r.Name,
+			GithubID:                *r.ID,
+			GithubAppInstallationID: installation.ID,
 		})
 	}
 	return res, nil

@@ -1,12 +1,12 @@
-package transport
+package handlers
 
-import (
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
-)
-
-type ChecksHandler struct {
-	checkService *services.CheckService
-}
+//import (
+//	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
+//)
+//
+//type ChecksHandler struct {
+//	checkService *prt.CheckService
+//}
 
 //func apiCheck(in *domain.Check) *models.Check {
 //	return &models.Check{

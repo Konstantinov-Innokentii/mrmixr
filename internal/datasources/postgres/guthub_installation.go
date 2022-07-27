@@ -17,12 +17,12 @@ func NewGithubInstallationRepo(pg *postgres.Postgres) *GithubInstallationRepo {
 	return repo
 }
 
-func (r *GithubInstallationRepo) GetInstallationByInstallationID(ctx context.Context, installationID int) (i *domain.GithubInstallation, err error) {
+func (r *GithubInstallationRepo) GetByInstallationID(ctx context.Context, installationID int) (i *domain.GithubAppInstallation, err error) {
 	sql, args, err := r.PG.Builder.Select("*").From("github_installation").Where("installation_id IN (?)", installationID).ToSql()
 	if err != nil {
 		return nil, err
 	}
-	installation := &domain.GithubInstallation{}
+	installation := &domain.GithubAppInstallation{}
 
 	err = r.PG.DB.QueryRowxContext(ctx, sql, args...).StructScan(installation)
 	if err != nil {
@@ -31,7 +31,7 @@ func (r *GithubInstallationRepo) GetInstallationByInstallationID(ctx context.Con
 	return installation, nil
 }
 
-func (r *GithubInstallationRepo) InsertInstallation(ctx context.Context, installation *domain.GithubInstallation) (err error) {
+func (r *GithubInstallationRepo) InsertInstallation(ctx context.Context, installation *domain.GithubAppInstallation) (err error) {
 	sql, args, err := r.PG.Builder.Insert("github_installation").Columns("installation_id", "installed_at", "installation_type").Values(installation.InstallationID, installation.InstalledAt, installation.InstallationType).Suffix("RETURNING \"id\"").ToSql()
 	if err != nil {
 		return err

@@ -4,24 +4,25 @@ import (
 	"context"
 	"fmt"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/domain"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/services"
 )
 
-type GithubSetupService struct {
-	installationService *GithubInstallationService
-	repositoryService   *GithubRepositoryService
+type GithubAppSetupSvc struct {
+	installationSvc ports.GithubAppInstallationSvc
+	repositorySvc   ports.GithubRepositorySvc
 }
 
-func NewGithubSetupService(ii *GithubInstallationService, ri *GithubRepositoryService) *GithubSetupService {
-	service := &GithubSetupService{
-		installationService: ii,
-		repositoryService:   ri,
+func NewGithubSetupSvc(gaiSvc ports.GithubAppInstallationSvc, grSvc ports.GithubRepositorySvc) *GithubAppSetupSvc {
+	svc := &GithubAppSetupSvc{
+		installationSvc: gaiSvc,
+		repositorySvc:   grSvc,
 	}
-	return service
+	return svc
 }
 
-func (service *GithubSetupService) Setup(ctx context.Context, installationID int) error {
+func (s *GithubAppSetupSvc) Setup(ctx context.Context, installationID int) error {
 	//return errors.New("some validation error")
-	installationType, err := service.installationService.GetInstallationType(ctx, installationID)
+	installationType, err := s.installationSvc.GetInstallationType(ctx, installationID)
 	if err != nil {
 		// wrap error:
 		//fmw.Errof(installiion-service-error-%w)
@@ -31,14 +32,14 @@ func (service *GithubSetupService) Setup(ctx context.Context, installationID int
 	if err != nil {
 		return err
 	}
-	err = service.installationService.Store(ctx, newInstallation)
-	installation, err := service.installationService.GetByInstallationID(ctx, installationID)
+	err = s.installationSvc.Store(ctx, newInstallation)
+	installation, err := s.installationSvc.GetByInstallationID(ctx, installationID)
 	if err != nil {
 		return err
 	}
-	err = service.repositoryService.Fetch(ctx, installation)
+	err = s.repositorySvc.Fetch(ctx, installation)
 	go func() {
-		err := service.repositoryService.Fetch(ctx, installation)
+		err := s.repositorySvc.Fetch(ctx, installation)
 		if err != nil {
 			// TODO: log smthing
 		}

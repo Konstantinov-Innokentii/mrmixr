@@ -1,20 +1,20 @@
-package transport
+package handlers
 
 import (
 	"context"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type SetupHandler struct {
-	githubSetupService *services.GithubSetupService
+	githubSetupSvc ports.GithubAppSetupSvc
 }
 
-func NewSetupHandler(githubSetupService *services.GithubSetupService) *SetupHandler {
+func NewSetupHandler(githubSetupSvc ports.GithubAppSetupSvc) *SetupHandler {
 	return &SetupHandler{
-		githubSetupService,
+		githubSetupSvc,
 	}
 }
 
@@ -25,7 +25,7 @@ func (handler *SetupHandler) Setup(c *gin.Context) {
 			"message": "Invalid installation_id",
 		})
 	}
-	err = handler.githubSetupService.Setup(context.Background(), installationID)
+	err = handler.githubSetupSvc.Setup(context.Background(), installationID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return

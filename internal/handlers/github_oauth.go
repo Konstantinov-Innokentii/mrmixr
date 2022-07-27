@@ -1,9 +1,9 @@
-package transport
+package handlers
 
 import (
 	"context"
 	"fmt"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/services"
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-github/v44/github"
 	"golang.org/x/oauth2"
@@ -13,12 +13,12 @@ import (
 )
 
 type GithubOauthHandler struct {
-	githubSetupService *services.GithubSetupService
+	githubSetupSvc ports.GithubAppSetupSvc
 }
 
-func NewGithubOauthHandler(githubSetupService *services.GithubSetupService) *GithubOauthHandler {
+func NewGithubOauthHandler(gsSvc ports.GithubAppSetupSvc) *GithubOauthHandler {
 	return &GithubOauthHandler{
-		githubSetupService: githubSetupService,
+		githubSetupSvc: gsSvc,
 	}
 }
 
@@ -54,7 +54,7 @@ func (handler *GithubOauthHandler) Auth(c *gin.Context) {
 			"message": "Invalid installation_id",
 		})
 	}
-	err = handler.githubSetupService.Setup(context.Background(), installationID)
+	err = handler.githubSetupSvc.Setup(context.Background(), installationID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return

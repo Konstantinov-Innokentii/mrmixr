@@ -7,7 +7,7 @@ import (
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/services"
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/datasources/github_rest_api_v3"
 	postgresRepo "github.com/Konstantinov-Innokentii/mrmixr/internal/datasources/postgres"
-	"github.com/Konstantinov-Innokentii/mrmixr/internal/transport"
+	"github.com/Konstantinov-Innokentii/mrmixr/internal/handlers"
 	"github.com/Konstantinov-Innokentii/mrmixr/pkg/github_api"
 	"github.com/Konstantinov-Innokentii/mrmixr/pkg/postgres"
 	"github.com/go-openapi/loads"
@@ -46,17 +46,17 @@ func main() {
 	//githubInstallationRepo := postgresRepo.NewGithubInstallationRepo(pg)
 	githubRepositoryRepo := postgresRepo.NewGithubRepositoryRepo(pg)
 
-	githubRepositoryService := services.NewGithubRepositoryService(githubRepositoryRepo, githubReposotoryApi)
+	githubRepositorySvc := services.NewGithubRepositorySvc(githubRepositoryRepo, githubReposotoryApi)
 	//githubInstallationService := services.NewGithubInstallationService(githubInstallationRepo, githubInstallationApi)
 	//githubSetupService := services.NewGithubSetupService(
 	//	githubInstallationService,
 	//	githubRepositoryService,
 	//)
 
-	//ghOauthHttpHandler := transport.NewGithubOauthHandler(githubSetupService)
-	//checksHandler := transport.NewChecksHandler()
-	githubRepositoryHandler := transport.NewGithubRepositoriesHandler(
-		githubRepositoryService,
+	//ghOauthHttpHandler := handlers.NewGithubOauthHandler(githubSetupService)
+	//checksHandler := handlers.NewChecksHandler()
+	githubRepositoryHandler := handlers.NewGithubRepositoriesHandler(
+		githubRepositorySvc,
 	)
 
 	// TODO: move server initialization in separate package
