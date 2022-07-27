@@ -9,18 +9,18 @@ import (
 )
 
 type GithubRepositoriesHandler struct {
-	githubRepositoriesSvc ports.GithubRepositorySvc
+	githubRepositoriesService ports.GithubRepositoryService
 }
 
-func NewGithubRepositoriesHandler(githubRepoSvc ports.GithubRepositorySvc) *GithubRepositoriesHandler {
+func NewGithubRepositoriesHandler(githubRepoService ports.GithubRepositoryService) *GithubRepositoriesHandler {
 	return &GithubRepositoriesHandler{
-		githubRepositoriesSvc: githubRepoSvc,
+		githubRepositoriesService: githubRepoService,
 	}
 }
 
 func (handler *GithubRepositoriesHandler) ListGithubRepositories(params operations.ListGithubRepositoriesParams) middleware.Responder {
 	ctx := params.HTTPRequest.Context()
-	repos, err := handler.githubRepositoriesSvc.ListByGithubAppInstallationID(ctx, 2)
+	repos, err := handler.githubRepositoriesService.ListByGithubAppInstallationID(ctx, 2)
 	if err != nil {
 		return operations.NewListGithubRepositoriesDefault(400)
 	}

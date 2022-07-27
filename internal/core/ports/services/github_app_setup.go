@@ -4,6 +4,6 @@ import (
 	"context"
 )
 
-type GithubAppSetupSvc interface {
+type GithubAppSetupService interface {
 	Setup(ctx context.Context, installationID int) error
 }

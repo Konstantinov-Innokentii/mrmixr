@@ -9,12 +9,12 @@ import (
 )
 
 type SetupHandler struct {
-	githubSetupSvc ports.GithubAppSetupSvc
+	githubSetupService ports.GithubAppSetupService
 }
 
-func NewSetupHandler(githubSetupSvc ports.GithubAppSetupSvc) *SetupHandler {
+func NewSetupHandler(githubAppSetupService ports.GithubAppSetupService) *SetupHandler {
 	return &SetupHandler{
-		githubSetupSvc,
+		githubAppSetupService,
 	}
 }
 
@@ -25,7 +25,7 @@ func (handler *SetupHandler) Setup(c *gin.Context) {
 			"message": "Invalid installation_id",
 		})
 	}
-	err = handler.githubSetupSvc.Setup(context.Background(), installationID)
+	err = handler.githubSetupService.Setup(context.Background(), installationID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return

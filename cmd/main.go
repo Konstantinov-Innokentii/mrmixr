@@ -46,7 +46,7 @@ func main() {
 	//githubInstallationRepo := postgresRepo.NewGithubInstallationRepo(pg)
 	githubRepositoryRepo := postgresRepo.NewGithubRepositoryRepo(pg)
 
-	githubRepositorySvc := services.NewGithubRepositorySvc(githubRepositoryRepo, githubReposotoryApi)
+	githubRepositoryService := services.NewGithubRepositoryService(githubRepositoryRepo, githubReposotoryApi)
 	//githubInstallationService := services.NewGithubInstallationService(githubInstallationRepo, githubInstallationApi)
 	//githubSetupService := services.NewGithubSetupService(
 	//	githubInstallationService,
@@ -56,7 +56,7 @@ func main() {
 	//ghOauthHttpHandler := handlers.NewGithubOauthHandler(githubSetupService)
 	//checksHandler := handlers.NewChecksHandler()
 	githubRepositoryHandler := handlers.NewGithubRepositoriesHandler(
-		githubRepositorySvc,
+		githubRepositoryService,
 	)
 
 	// TODO: move server initialization in separate package

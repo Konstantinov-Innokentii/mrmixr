@@ -6,25 +6,25 @@ import (
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/repositories"
 )
 
-type GithubRepositorySvc struct {
+type GithubRepositoryService struct {
 	githubRepositoryRepo ports.GithubRepositoryRepo
 	githubRepositoryApi  ports.GithubRepositoryApi
 }
 
-func NewGithubRepositorySvc(grepo ports.GithubRepositoryRepo, grapi ports.GithubRepositoryApi) *GithubRepositorySvc {
-	svc := &GithubRepositorySvc{
-		githubRepositoryRepo: grepo,
-		githubRepositoryApi:  grapi,
+func NewGithubRepositoryService(grRepo ports.GithubRepositoryRepo, grApi ports.GithubRepositoryApi) *GithubRepositoryService {
+	service := &GithubRepositoryService{
+		githubRepositoryRepo: grRepo,
+		githubRepositoryApi:  grApi,
 	}
-	return svc
+	return service
 }
 
-func (s *GithubRepositorySvc) StoreBatch(ctx context.Context, repos []*domain.GithubRepository) error {
+func (s *GithubRepositoryService) StoreBatch(ctx context.Context, repos []*domain.GithubRepository) error {
 	err := s.githubRepositoryRepo.InsertRepositoryBatch(ctx, repos)
 	return err
 }
 
-func (s *GithubRepositorySvc) Fetch(ctx context.Context, installation *domain.GithubAppInstallation) error {
+func (s *GithubRepositoryService) Fetch(ctx context.Context, installation *domain.GithubAppInstallation) error {
 	repos, err := s.githubRepositoryApi.List(ctx, installation)
 	if err != nil {
 		return err
@@ -33,7 +33,7 @@ func (s *GithubRepositorySvc) Fetch(ctx context.Context, installation *domain.Gi
 	return err
 }
 
-func (s *GithubRepositorySvc) ListByGithubAppInstallationID(ctx context.Context, installationID int) ([]*domain.GithubRepository, error) {
+func (s *GithubRepositoryService) ListByGithubAppInstallationID(ctx context.Context, installationID int) ([]*domain.GithubRepository, error) {
 	repos, err := s.githubRepositoryRepo.ListByGithubAppInstallationID(ctx, installationID)
 	if err != nil {
 		return nil, err

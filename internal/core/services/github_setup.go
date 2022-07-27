@@ -7,22 +7,22 @@ import (
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/services"
 )
 
-type GithubAppSetupSvc struct {
-	installationSvc ports.GithubAppInstallationSvc
-	repositorySvc   ports.GithubRepositorySvc
+type GithubAppSetupService struct {
+	installationService ports.GithubAppInstallationService
+	repositoryService   ports.GithubRepositoryService
 }
 
-func NewGithubSetupSvc(gaiSvc ports.GithubAppInstallationSvc, grSvc ports.GithubRepositorySvc) *GithubAppSetupSvc {
-	svc := &GithubAppSetupSvc{
-		installationSvc: gaiSvc,
-		repositorySvc:   grSvc,
+func NewGithubSetupService(gaiService ports.GithubAppInstallationService, grService ports.GithubRepositoryService) *GithubAppSetupService {
+	service := &GithubAppSetupService{
+		installationService: gaiService,
+		repositoryService:   grService,
 	}
-	return svc
+	return service
 }
 
-func (s *GithubAppSetupSvc) Setup(ctx context.Context, installationID int) error {
+func (s *GithubAppSetupService) Setup(ctx context.Context, installationID int) error {
 	//return errors.New("some validation error")
-	installationType, err := s.installationSvc.GetInstallationType(ctx, installationID)
+	installationType, err := s.installationService.GetInstallationType(ctx, installationID)
 	if err != nil {
 		// wrap error:
 		//fmw.Errof(installiion-service-error-%w)
@@ -32,14 +32,14 @@ func (s *GithubAppSetupSvc) Setup(ctx context.Context, installationID int) error
 	if err != nil {
 		return err
 	}
-	err = s.installationSvc.Store(ctx, newInstallation)
-	installation, err := s.installationSvc.GetByInstallationID(ctx, installationID)
+	err = s.installationService.Store(ctx, newInstallation)
+	installation, err := s.installationService.GetByInstallationID(ctx, installationID)
 	if err != nil {
 		return err
 	}
-	err = s.repositorySvc.Fetch(ctx, installation)
+	err = s.repositoryService.Fetch(ctx, installation)
 	go func() {
-		err := s.repositorySvc.Fetch(ctx, installation)
+		err := s.repositoryService.Fetch(ctx, installation)
 		if err != nil {
 			// TODO: log smthing
 		}

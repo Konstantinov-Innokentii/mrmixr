@@ -6,20 +6,20 @@ import (
 	"github.com/Konstantinov-Innokentii/mrmixr/internal/core/ports/repositories"
 )
 
-type GithubAppInstallationSvc struct {
-	githubInstallationRepo ports.GithubInstallationRepo
-	githubInstallationAPI  ports.GithubInstallationAPI
+type GithubAppInstallationService struct {
+	githubInstallationRepo ports.GithubAppInstallationRepo
+	githubInstallationAPI  ports.GithubAppInstallationAPI
 }
 
-func NewGithubInstallationSvc(irepo ports.GithubInstallationRepo, iapi ports.GithubInstallationAPI) *GithubAppInstallationSvc {
-	svc := &GithubAppInstallationSvc{
-		githubInstallationRepo: irepo,
-		githubInstallationAPI:  iapi,
+func NewGithubInstallationService(gaiRepo ports.GithubAppInstallationRepo, gaiApi ports.GithubAppInstallationAPI) *GithubAppInstallationService {
+	service := &GithubAppInstallationService{
+		githubInstallationRepo: gaiRepo,
+		githubInstallationAPI:  gaiApi,
 	}
-	return svc
+	return service
 }
 
-func (s *GithubAppInstallationSvc) GetByInstallationID(ctx context.Context, installationID int) (*domain.GithubAppInstallation, error) {
+func (s *GithubAppInstallationService) GetByInstallationID(ctx context.Context, installationID int) (*domain.GithubAppInstallation, error) {
 	i, err := s.githubInstallationRepo.GetByInstallationID(ctx, installationID)
 	if err != nil {
 		return nil, err
@@ -28,12 +28,12 @@ func (s *GithubAppInstallationSvc) GetByInstallationID(ctx context.Context, inst
 
 }
 
-func (s *GithubAppInstallationSvc) Store(ctx context.Context, installation *domain.GithubAppInstallation) error {
+func (s *GithubAppInstallationService) Store(ctx context.Context, installation *domain.GithubAppInstallation) error {
 	err := s.githubInstallationRepo.InsertInstallation(ctx, installation)
 	return err
 }
 
-func (s *GithubAppInstallationSvc) GetInstallationType(ctx context.Context, installationID int) (*domain.InstallationType, error) {
+func (s *GithubAppInstallationService) GetInstallationType(ctx context.Context, installationID int) (*domain.InstallationType, error) {
 	installationType, err := s.githubInstallationAPI.GetInstallationType(ctx, installationID)
 	if err != nil {
 		return nil, err

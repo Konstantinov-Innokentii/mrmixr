@@ -13,12 +13,12 @@ import (
 )
 
 type GithubOauthHandler struct {
-	githubSetupSvc ports.GithubAppSetupSvc
+	githubSetupService ports.GithubAppSetupService
 }
 
-func NewGithubOauthHandler(gsSvc ports.GithubAppSetupSvc) *GithubOauthHandler {
+func NewGithubOauthHandler(gasService ports.GithubAppSetupService) *GithubOauthHandler {
 	return &GithubOauthHandler{
-		githubSetupSvc: gsSvc,
+		githubSetupService: gasService,
 	}
 }
 
@@ -54,7 +54,7 @@ func (handler *GithubOauthHandler) Auth(c *gin.Context) {
 			"message": "Invalid installation_id",
 		})
 	}
-	err = handler.githubSetupSvc.Setup(context.Background(), installationID)
+	err = handler.githubSetupService.Setup(context.Background(), installationID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
